@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador - DEVGARCIAS SOLUTIONS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --color-dark: #585859;
+            --color-primary: #07598C;
+            --color-secondary: #03658C;
+            --color-accent: #568FA6;
+            --color-light: #F2F2F2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--color-light);
+            color: var(--color-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            padding: 20px 0;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .contact-info {
+            text-align: right;
+            font-size: 14px;
+        }
+        
+        .contact-info p {
+            margin-bottom: 5px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        h2 {
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--color-accent);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--color-dark);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 2px rgba(86, 143, 166, 0.2);
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        
+        .col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 200px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(242, 242, 242, 0.5);
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--color-secondary);
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-success {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .totals {
+            margin-top: 20px;
+            text-align: right;
+        }
+        
+        .totals p {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .total-final {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .iva-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .iva-option {
+            flex: 1;
+        }
+        
+        .iva-option input {
+            width: 100%;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: var(--color-dark);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-info {
+                text-align: center;
+                margin-top: 15px;
+            }
+            
+            .row {
+                flex-direction: column;
+            }
+            
+            .col {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .actions button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <h1>DEVGARCIAS SOLUTIONS</h1>
+                    <p>Soluciones tecnológicas a tu medida</p>
+                </div>
+                <div class="contact-info">
+                    <p>Email: contacto@devgarcias.com</p>
+                    <p>Teléfono: +52 55 1234 5678</p>
+                    <p>Dirección: Ciudad de México, México</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="card">
+            <h2>Datos del Cliente</h2>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="client-name">Nombre del Cliente</label>
+                        <input type="text" id="client-name" placeholder="Ingresa el nombre del cliente">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="client-email">Email</label>
+                        <input type="email" id="client-email" placeholder="correo@ejemplo.com">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="client-phone">Teléfono</label>
+                        <input type="tel" id="client-phone" placeholder="+52 55 1234 5678">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="client-company">Empresa (opcional)</label>
+                        <input type="text" id="client-company" placeholder="Nombre de la empresa">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="client-address">Dirección</label>
+                <input type="text" id="client-address" placeholder="Dirección completa">
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Partidas de la Cotización</h2>
+            <table id="items-table">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th width="100">Cantidad</th>
+                        <th width="120">Precio Unitario</th>
+                        <th width="120">Total</th>
+                        <th width="50">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="items-body">
+                    <!-- Las partidas se agregarán aquí dinámicamente -->
+                </tbody>
+            </table>
+            
+            <button id="add-item" class="btn btn-outline">+ Agregar Partida</button>
+            
+            <div class="totals">
+                <p>Subtotal: $<span id="subtotal">0.00</span></p>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="apply-iva">
+                    <label for="apply-iva">Aplicar IVA</label>
+                </div>
+                
+                <div id="iva-options" class="iva-options hidden">
+                    <div class="iva-option">
+                        <label for="iva-rate">Tasa de IVA (%)</label>
+                        <input type="number" id="iva-rate" value="16" min="0" max="100" step="0.1">
+                    </div>
+                    <div class="iva-option">
+                        <label for="iva-amount">Monto de IVA</label>
+                        <input type="text" id="iva-amount" value="$0.00" readonly>
+                    </div>
+                </div>
+                
+                <p class="total-final">Total: $<span id="total">0.00</span></p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Observaciones</h2>
+            <div class="form-group">
+                <textarea id="observations" rows="4" placeholder="Agrega observaciones adicionales sobre la cotización..."></textarea>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button id="reset" class="btn btn-danger">Limpiar Todo</button>
+            <button id="generate-pdf" class="btn btn-success">Generar PDF</button>
+        </div>
+        
+        <footer>
+            <p>DEVGARCIAS SOLUTIONS &copy; 2023 - Todos los derechos reservados</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables globales
+            let items = [];
+            let itemCounter = 0;
+            
+            // Elementos del DOM
+            const itemsBody = document.getElementById('items-body');
+            const addItemBtn = document.getElementById('add-item');
+            const subtotalEl = document.getElementById('subtotal');
+            const totalEl = document.getElementById('total');
+            const applyIvaCheckbox = document.getElementById('apply-iva');
+            const ivaOptions = document.getElementById('iva-options');
+            const ivaRateInput = document.getElementById('iva-rate');
+            const ivaAmountEl = document.getElementById('iva-amount');
+            const generatePdfBtn = document.getElementById('generate-pdf');
+            const resetBtn = document.getElementById('reset');
+            
+            // Inicializar
+            addNewItem();
+            updateTotals();
+            
+            // Event Listeners
+            addItemBtn.addEventListener('click', addNewItem);
+            applyIvaCheckbox.addEventListener('change', toggleIvaOptions);
+            ivaRateInput.addEventListener('input', updateTotals);
+            generatePdfBtn.addEventListener('click', generatePDF);
+            resetBtn.addEventListener('click', resetForm);
+            
+            // Funciones
+            function addNewItem() {
+                const itemId = itemCounter++;
+                const newItem = {
+                    id: itemId,
+                    description: '',
+                    quantity: 1,
+                    price: 0,
+                    total: 0
+                };
+                
+                items.push(newItem);
+                renderItems();
+                
+                // Enfocar el campo de descripción del nuevo elemento
+                setTimeout(() => {
+                    const descriptionInput = document.getElementById(`description-${itemId}`);
+                    if (descriptionInput) descriptionInput.focus();
+                }, 100);
+            }
+            
+            function renderItems() {
+                itemsBody.innerHTML = '';
+                
+                items.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <input type="text" id="description-${item.id}" value="${item.description}" 
+                                   placeholder="Descripción del servicio/producto" oninput="updateItem(${item.id}, 'description', this.value)">
+                        </td>
+                        <td>
+                            <input type="number" id="quantity-${item.id}" value="${item.quantity}" min="1" 
+                                   oninput="updateItem(${item.id}, 'quantity', this.value)">
+                        </td>
+                        <td>
+                            <input type="number" id="price-${item.id}" value="${item.price}" min="0" step="0.01" 
+                                   oninput="updateItem(${item.id}, 'price', this.value)">
+                        </td>
+                        <td>
+                            $<span id="total-${item.id}">${item.total.toFixed(2)}</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" onclick="removeItem(${item.id})">X</button>
+                        </td>
+                    `;
+                    itemsBody.appendChild(row);
+                });
+            }
+            
+            function updateItem(id, field, value) {
+                const item = items.find(item => item.id === id);
+                if (!item) return;
+                
+                if (field === 'description') {
+                    item.description = value;
+                } else if (field === 'quantity') {
+                    item.quantity = parseFloat(value) || 0;
+                } else if (field === 'price') {
+                    item.price = parseFloat(value) || 0;
+                }
+                
+                // Calcular total del item
+                item.total = item.quantity * item.price;
+                
+                // Actualizar visualización del total del item
+                const totalEl = document.getElementById(`total-${id}`);
+                if (totalEl) {
+                    totalEl.textContent = item.total.toFixed(2);
+                }
+                
+                updateTotals();
+            }
+            
+            function removeItem(id) {
+                items = items.filter(item => item.id !== id);
+                renderItems();
+                updateTotals();
+            }
+            
+            function updateTotals() {
+                // Calcular subtotal
+                const subtotal = items.reduce((sum, item) => sum + item.total, 0);
+                subtotalEl.textContent = subtotal.toFixed(2);
+                
+                // Calcular IVA si está activado
+                let ivaAmount = 0;
+                let total = subtotal;
+                
+                if (applyIvaCheckbox.checked) {
+                    const ivaRate = parseFloat(ivaRateInput.value) || 0;
+                    ivaAmount = subtotal * (ivaRate / 100);
+                    ivaAmountEl.textContent = `$${ivaAmount.toFixed(2)}`;
+                    total = subtotal + ivaAmount;
+                }
+                
+                totalEl.textContent = total.toFixed(2);
+            }
+            
+            function toggleIvaOptions() {
+                if (applyIvaCheckbox.checked) {
+                    ivaOptions.classList.remove('hidden');
+                } else {
+                    ivaOptions.classList.add('hidden');
+                }
+                updateTotals();
+            }
+            
+            function resetForm() {
+                if (confirm('¿Estás seguro de que deseas limpiar toda la cotización?')) {
+                    items = [];
+                    itemCounter = 0;
+                    document.getElementById('client-name').value = '';
+                    document.getElementById('client-email').value = '';
+                    document.getElementById('client-phone').value = '';
+                    document.getElementById('client-company').value = '';
+                    document.getElementById('client-address').value = '';
+                    document.getElementById('observations').value = '';
+                    applyIvaCheckbox.checked = false;
+                    ivaRateInput.value = '16';
+                    toggleIvaOptions();
+                    addNewItem();
+                    updateTotals();
+                }
+            }
+            
+            function generatePDF() {
+                // Validar datos mínimos
+                const clientName = document.getElementById('client-name').value.trim();
+                if (!clientName) {
+                    alert('Por favor, ingresa al menos el nombre del cliente.');
+                    return;
+                }
+                
+                if (items.length === 0 || items.every(item => !item.description)) {
+                    alert('Por favor, agrega al menos una partida con descripción.');
+                    return;
+                }
+                
+                // Usar html2canvas y jsPDF para generar el PDF
+                const { jsPDF } = window.jspdf;
+                
+                // Crear un elemento temporal para el PDF
+                const pdfContainer = document.createElement('div');
+                pdfContainer.style.width = '210mm';
+                pdfContainer.style.padding = '20mm';
+                pdfContainer.style.fontFamily = 'Arial, sans-serif';
+                pdfContainer.style.color = '#333';
+                pdfContainer.style.backgroundColor = 'white';
+                
+                // Construir el contenido del PDF
+                let pdfContent = `
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h1 style="color: #07598C; margin-bottom: 5px;">DEVGARCIAS SOLUTIONS</h1>
+                        <p style="color: #585859; font-size: 14px;">Soluciones tecnológicas a tu medida</p>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                        <div>
+                            <p><strong>Cotización para:</strong></p>
+                            <p>${document.getElementById('client-name').value}</p>
+                            ${document.getElementById('client-company').value ? `<p>${document.getElementById('client-company').value}</p>` : ''}
+                            <p>${document.getElementById('client-email').value}</p>
+                            <p>${document.getElementById('client-phone').value}</p>
+                            <p>${document.getElementById('client-address').value}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <p><strong>DEVGARCIAS SOLUTIONS</strong></p>
+                            <p>contacto@devgarcias.com</p>
+                            <p>+52 55 1234 5678</p>
+                            <p>Ciudad de México, México</p>
+                            <p>Fecha: ${new Date().toLocaleDateString('es-MX')}</p>
+                        </div>
+                    </div>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <thead>
+                            <tr style="background-color: #07598C; color: white;">
+                                <th style="padding: 10px; text-align: left;">Descripción</th>
+                                <th style="padding: 10px; width: 80px;">Cantidad</th>
+                                <th style="padding: 10px; width: 100px;">Precio Unitario</th>
+                                <th style="padding: 10px; width: 100px;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                items.forEach(item => {
+                    if (item.description) {
+                        pdfContent += `
+                            <tr>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.description}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">${item.quantity}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;">$${item.price.toFixed(2)}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;">$${item.total.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    }
+                });
+                
+                pdfContent += `
+                        </tbody>
+                    </table>
+                    
+                    <div style="text-align: right; margin-bottom: 30px;">
+                        <p style="font-size: 16px;">Subtotal: $${parseFloat(subtotalEl.textContent).toFixed(2)}</p>
+                `;
+                
+                if (applyIvaCheckbox.checked) {
+                    const ivaRate = parseFloat(ivaRateInput.value) || 0;
+                    const ivaAmount = parseFloat(subtotalEl.textContent) * (ivaRate / 100);
+                    pdfContent += `
+                        <p style="font-size: 16px;">IVA (${ivaRate}%): $${ivaAmount.toFixed(2)}</p>
+                    `;
+                }
+                
+                pdfContent += `
+                        <p style="font-size: 20px; font-weight: bold; color: #07598C;">Total: $${parseFloat(totalEl.textContent).toFixed(2)}</p>
+                    </div>
+                `;
+                
+                const observations = document.getElementById('observations').value.trim();
+                if (observations) {
+                    pdfContent += `
+                        <div style="margin-bottom: 20px;">
+                            <p><strong>Observaciones:</strong></p>
+                            <p>${observations}</p>
+                        </div>
+                    `;
+                }
+                
+                pdfContent += `
+                    <div style="margin-top: 40px; font-size: 12px; color: #585859; text-align: center;">
+                        <p><strong>NOTA:</strong> Los precios están sujetos a cambios sin previo aviso. Esta cotización es válida por 30 días.</p>
+                        <p>DEVGARCIAS SOLUTIONS - contacto@devgarcias.com - +52 55 1234 5678</p>
+                    </div>
+                `;
+                
+                pdfContainer.innerHTML = pdfContent;
+                document.body.appendChild(pdfContainer);
+                
+                // Generar PDF
+                html2canvas(pdfContainer, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgWidth = 210;
+                    const pageHeight = 295;
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+                    let heightLeft = imgHeight;
+                    let position = 0;
+                    
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                    
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    
+                    // Descargar PDF
+                    pdf.save(`Cotizacion_DEVGARCIAS_${document.getElementById('client-name').value.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.pdf`);
+                    
+                    // Limpiar
+                    document.body.removeChild(pdfContainer);
+                });
+            }
+            
+            // Hacer las funciones disponibles globalmente para los event listeners inline
+            window.updateItem = updateItem;
+            window.removeItem = removeItem;
+        });
+    </script>
+</body>
+</html>
