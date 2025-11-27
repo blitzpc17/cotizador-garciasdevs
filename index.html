@@ -62,7 +62,7 @@
         
         .contact-info {
             text-align: right;
-            font-size: 14px;
+            font-size: 12px;
         }
         
         .contact-info p {
@@ -292,8 +292,8 @@
                 </div>
                 <div class="contact-info">
                     <p>Email: remizeroaw117@gmail.com</p>
-                    <p>Teléfono: 238 145 86 80</p>
-                    <p>Dirección: C 16 No. 124, 75857.<br>Tehuacán Puebla, México</p>
+                    <p>Teléfono: +52 238 145 8680</p>
+                    <p>Dirección: C 16 N 124, 75857.<br>TEHUACÁN, PUEBLA.</p>
                 </div>
             </div>
         </header>
@@ -590,9 +590,9 @@
                         </div>
                         <div style="text-align: right;">
                             <p><strong>DEVGARCIAS SOLUTIONS</strong></p>
-                            <p>contacto@devgarcias.com</p>
-                            <p>+52 55 1234 5678</p>
-                            <p>Ciudad de México, México</p>
+                            <p>remizeroaw117@gmail.com</p>
+                            <p>+52 238 145 8680</p>
+                            <p>Tehuacán, Puebla, México</p>
                             <p>Fecha: ${new Date().toLocaleDateString('es-MX')}</p>
                         </div>
                     </div>
@@ -613,7 +613,7 @@
                     if (item.description) {
                         pdfContent += `
                             <tr>
-                                <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.description}</td>
+                                <td style="padding: 10px; border-bottom: 1px solid #ddd; font-size: 10px;">${item.description}</td>
                                 <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">${item.quantity}</td>
                                 <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;">$${item.price.toFixed(2)}</td>
                                 <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;">$${item.total.toFixed(2)}</td>
@@ -654,9 +654,9 @@
                 }
                 
                 pdfContent += `
-                    <div style="margin-top: 40px; font-size: 12px; color: #585859; text-align: center;">
+                    <div style="margin-top: 40px; font-size: 10px; color: #585859; text-align: center;">
                         <p><strong>NOTA:</strong> Los precios están sujetos a cambios sin previo aviso. Esta cotización es válida por 30 días.</p>
-                        <p>DEVGARCIAS SOLUTIONS - contacto@devgarcias.com - +52 55 1234 5678</p>
+                        <p>DEVGARCIAS SOLUTIONS - remizeroaw117@gmail.com - +52 238 145 8680</p>
                     </div>
                 `;
                 
